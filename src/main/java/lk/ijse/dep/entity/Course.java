@@ -17,8 +17,7 @@ import javax.persistence.Table;
 @Table(name = "course")
 public class Course implements SuperEntity{
     @Id
-    private
-    String code;
+    private String code;
     private String description;
     private String duration;
     private Audience audience;

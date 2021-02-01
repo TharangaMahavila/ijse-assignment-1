@@ -5,4 +5,5 @@ package lk.ijse.dep.business;
  * @since : 2021-02-01
  **/
 public enum BOTypes {
+    COURSE,STUDENT;
 }
