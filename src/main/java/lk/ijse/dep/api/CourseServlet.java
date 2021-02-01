@@ -24,7 +24,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
  * @author:Tharanga Mahavila <tharangamahavila@gmail.com>
  * @since : 2021-02-01
  **/
-@WebServlet(name = "CourseServlet",urlPatterns = "api/v1/courses/*")
+@WebServlet(name = "CourseServlet",urlPatterns = "/api/v1/courses/*")
 public class CourseServlet extends HttpServlet {
 
     @Override
