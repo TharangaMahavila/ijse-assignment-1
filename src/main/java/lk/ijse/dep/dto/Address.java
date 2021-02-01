@@ -5,18 +5,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * @author:Tharanga Mahavila <tharangamahavila@gmail.com>
  * @since : 2021-02-01
  **/
 @Data @AllArgsConstructor @NoArgsConstructor
-public class StudentDTO implements Serializable {
-    private int id;
-    private String studentName;
-    private Address address;
-    private Gender gender;
-    private Date dob;
-    private String contact;
+public class Address implements Serializable {
+    private String no;
+    private String addressLine1;
+    private String addressLine2;
+    private String city;
 }

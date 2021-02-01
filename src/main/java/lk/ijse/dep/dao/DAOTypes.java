@@ -5,4 +5,5 @@ package lk.ijse.dep.dao;
  * @since : 2021-02-01
  **/
 public enum  DAOTypes {
+    COURSE,STUDENT,QUERY;
 }

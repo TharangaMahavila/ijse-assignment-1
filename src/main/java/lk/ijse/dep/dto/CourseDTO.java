@@ -10,8 +10,7 @@ import java.io.Serializable;
  * @author:Tharanga Mahavila <tharangamahavila@gmail.com>
  * @since : 2021-02-01
  **/
-@Data @AllArgsConstructor
-@NoArgsConstructor
+@Data @AllArgsConstructor @NoArgsConstructor
 public class CourseDTO implements Serializable {
     private String code;
     private String description;
