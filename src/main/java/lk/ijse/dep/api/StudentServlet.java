@@ -49,7 +49,12 @@ public class StudentServlet extends HttpServlet {
             resp.setContentType("application/json");
             StudentBO studentBO = BOFactory.getInstance().getBO(BOTypes.STUDENT);
             studentBO.setEntityManager(em);
-            resp.getWriter().println(jsonb.toJson(studentBO.findAllStudents()));
+            String studentId = req.getPathInfo();
+            if(studentId == null || studentId.trim().isEmpty()){
+                resp.getWriter().println(jsonb.toJson(studentBO.findAllStudents()));
+            }else {
+                resp.getWriter().println(jsonb.toJson(studentBO.findStudentById(studentId)));
+            }
 
         } catch (Throwable t) {
             ResponseExceptionUtil.handle(t, resp);
@@ -66,7 +71,7 @@ public class StudentServlet extends HttpServlet {
         try {
             StudentDTO dto = jsonb.fromJson(req.getReader(), StudentDTO.class);
 
-            if (dto.getId() == 0 || dto.getStudentName().trim().isEmpty() || dto.getAddress() == null || dto.getContact().trim().isEmpty() || dto.getDob() == null || dto.getGender() == null || dto.getContact() == null) {
+            if (dto.getId() != null || dto.getStudentName().trim().isEmpty() || dto.getAddress() == null || dto.getContact().trim().isEmpty() || dto.getDob() == null || dto.getGender() == null || dto.getContact() == null) {
                 throw new HttpResponseException(400, "Invalid Student details", null);
             }
 
