@@ -64,7 +64,80 @@ public class CourseServlet extends HttpServlet {
         }
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse resp) throws ServletException, IOException {
+        Jsonb jsonb = JsonbBuilder.create();
 
+        final EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribute("emf");
+        EntityManager em = emf.createEntityManager();
+
+        try{
+            resp.setContentType("application/json");
+            CourseBO courseBO = BOFactory.getInstance().getBO(BOTypes.COURSE);
+            courseBO.setEntityManager(em);
+            resp.getWriter().println(jsonb.toJson(courseBO.findAllCourses()));
+
+        } catch (Throwable t) {
+            ResponseExceptionUtil.handle(t, resp);
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        final EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribute("emf");
+        EntityManager em = emf.createEntityManager();
+
+        try{
+
+            if (req.getPathInfo() == null || req.getPathInfo().replace("/", "").trim().isEmpty()) {
+                throw new HttpResponseException(400, "Invalid course id", null);
+            }
+
+            String id = req.getPathInfo().replace("/", "");
+            Jsonb jsonb = JsonbBuilder.create();
+            CourseDTO dto = jsonb.fromJson(req.getReader(), CourseDTO.class);
+
+            if (dto.getCode() == null || dto.getDescription().trim().isEmpty() || dto.getDuration().trim().isEmpty()) {
+                throw new HttpResponseException(400, "Invalid details", null);
+            }
+
+            CourseBO courseBO = BOFactory.getInstance().getBO(BOTypes.COURSE);
+            courseBO.setEntityManager(em);
+            courseBO.updateCourse(dto);
+            resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
+
+        } catch (JsonbException exp) {
+            throw new HttpResponseException(400, "Failed to read the JSON", exp);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        final EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribute("emf");
+        EntityManager em = emf.createEntityManager();
+
+        try{
+
+            if (req.getPathInfo() == null || req.getPathInfo().replace("/", "").trim().isEmpty()) {
+                throw new HttpResponseException(400, "Invalid course id", null);
+            }
+
+            String id = req.getPathInfo().replace("/", "");
+
+            CourseBO courseBO = BOFactory.getInstance().getBO(BOTypes.COURSE);
+            courseBO.setEntityManager(em);
+            courseBO.deleteCourse(id);
+            resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            em.close();
+        }
     }
 }

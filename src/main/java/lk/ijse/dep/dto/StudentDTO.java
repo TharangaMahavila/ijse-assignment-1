@@ -13,7 +13,7 @@ import java.util.Date;
  **/
 @Data @AllArgsConstructor @NoArgsConstructor
 public class StudentDTO implements Serializable {
-    private int id;
+    private Integer id;
     private String studentName;
     private Address address;
     private Gender gender;
